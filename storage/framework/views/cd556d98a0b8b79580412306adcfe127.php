@@ -3,78 +3,77 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard User - Lokalify 📍</title>
+    <title>Dashboard User - Lokalify ✨</title>
     <!-- Tailwind CSS CDN & Font Plus Jakarta Sans -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <style>
+        [x-cloak] { display: none !important; }
         body { font-family: 'Plus Jakarta Sans', sans-serif; }
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
         
-        /* 1. ANIMASI HERO / BERANDA: Fade In + Slide Up Lembut & Santai[cite: 1] */
+        /* 1. ANIMASI HERO / BERANDA: Fade In + Slide Up Ringan */
         @keyframes heroFadeSlideUp {
-            0% { opacity: 0; transform: translateY(40px) scale(0.98); }
-            100% { opacity: 1; transform: translateY(0) scale(1); }
+            0% { opacity: 0; transform: translateY(20px); }
+            100% { opacity: 1; transform: translateY(0); }
         }
         .animate-hero-entry {
-            animation: heroFadeSlideUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            animation: heroFadeSlideUp 0.6s ease-out forwards;
         }
 
         @keyframes float-parallax-1 {
-            0%, 100% { transform: translate(0px, 0px) scale(1); }
-            50% { transform: translate(20px, -20px) scale(1.05); }
+            0%, 100% { transform: translate(0px, 0px); }
+            50% { transform: translate(10px, -10px); }
         }
         @keyframes float-parallax-2 {
-            0%, 100% { transform: translate(0px, 0px) scale(1); }
-            50% { transform: translate(-15px, 15px) scale(0.95); }
+            0%, 100% { transform: translate(0px, 0px); }
+            50% { transform: translate(-10px, 10px); }
         }
         .parallax-bg-1 { animation: float-parallax-1 12s ease-in-out infinite; }
         .parallax-bg-2 { animation: float-parallax-2 15s ease-in-out infinite; }
 
-        /* 2. ANIMASI CHAT LOKALIFY: Floating Sangat Ringan[cite: 1] */
+        /* 2. ANIMASI CHAT LOKALIFY */
         @keyframes float-slow {
             0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-8px); }
+            50% { transform: translateY(-6px); }
         }
         .animate-float-ai {
             animation: float-slow 4.5s ease-in-out infinite;
         }
 
-        /* 3. SCROLL REVEAL & STAGGER ANIMATION YANG LEBIH SMOOTH[cite: 1] */
+        /* 3. SCROLL REVEAL KARTU */
         .reveal-card {
             opacity: 0;
-            transform: translateY(35px) scale(0.98);
-            transition: opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1), transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
-            will-change: opacity, transform;
+            transform: translateY(20px);
+            transition: opacity 0.5s ease-out, transform 0.5s ease-out;
         }
         .reveal-card.revealed {
             opacity: 1;
-            transform: translateY(0) scale(1);
+            transform: translateY(0);
         }
 
-        /* 4. ANIMASI KELUAR (EXIT ANIMATION) SAAT KLIK DETAIL WISATA (TIDAK SIMPLE) */
-        @keyframes complexExit {
-            0% { opacity: 1; transform: translateY(0) scale(1) rotate(0deg); filter: blur(0px); }
-            40% { opacity: 0.8; transform: translateY(15px) scale(0.99) rotate(0.2deg); filter: blur(1px); }
-            100% { opacity: 0; transform: translateY(50px) scale(0.95) rotate(-1deg); filter: blur(8px); }
+        /* 4. ANIMASI KELUAR (EXIT ANIMATION) DIPEREPAT MENJADI INSTAN/CEPAT */
+        @keyframes fastExit {
+            0% { opacity: 1; transform: scale(1); }
+            100% { opacity: 0; transform: scale(0.98); }
         }
         .page-exit-animation {
-            animation: complexExit 0.85s cubic-bezier(0.7, 0, 0.84, 0) forwards;
+            animation: fastExit 0.2s ease-in forwards;
             pointer-events: none;
         }
 
-        /* 5. MICROINTERACTION DENGAN FEEDBACK AKTIF[cite: 1] */
+        /* 5. MICROINTERACTION TOMBOL */
         .btn-micro {
-            transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.25s ease, box-shadow 0.25s ease;
+            transition: transform 0.15s ease, background-color 0.2s ease;
         }
         .btn-micro:active {
-            transform: scale(0.93) !important;
+            transform: scale(0.95) !important;
         }
 
-        /* 6. INDIKATOR MENGETIK AI[cite: 1] */
+        /* 6. INDIKATOR MENGETIK AI */
         @keyframes dotBlink {
             0%, 80%, 100% { opacity: 0.3; transform: scale(0.8); }
             40% { opacity: 1; transform: scale(1.3); }
@@ -87,20 +86,34 @@
         .typing-dot:nth-child(3) { animation-delay: 0.5s; }
 
         .glow-teal {
-            box-shadow: 0 0 45px -5px rgba(20, 184, 166, 0.2);
+            box-shadow: 0 0 40px -5px rgba(20, 184, 166, 0.15);
         }
     </style>
 </head>
 <body class="bg-slate-950 text-slate-100 min-h-screen flex text-xs selection:bg-teal-500 selection:text-slate-950" 
-      x-data="{ sidebarOpen: false, aiOpen: false, isLoading: true, isExiting: false }" 
-      x-init="setTimeout(() => isLoading = false, 1000)">
+      x-data="{
+          sidebarOpen: false,
+          aiOpen: false,
+          bisnisModalOpen: false,
+          leaderboardModalOpen: false,
+          isLoading: true,
+          isExiting: false,
+          navigateWithExit(event) {
+              const targetUrl = event.currentTarget.href;
+              this.isExiting = true;
+              setTimeout(() => {
+                  window.location.href = targetUrl;
+              }, 150);
+          }
+      }"
+      x-init="setTimeout(() => isLoading = false, 400)">
 
     <!-- OVERLAY MOBILE -->
     <div x-show="sidebarOpen" 
-         x-transition:enter="transition-opacity ease-out duration-400"
+         x-transition:enter="transition-opacity ease-out duration-300"
          x-transition:enter-start="opacity-0"
          x-transition:enter-end="opacity-100"
-         x-transition:leave="transition-opacity ease-in duration-300"
+         x-transition:leave="transition-opacity ease-in duration-200"
          x-transition:leave-start="opacity-100"
          x-transition:leave-end="opacity-0"
          @click="sidebarOpen = false" 
@@ -108,7 +121,7 @@
 
     <!-- SIDEBAR KIRI -->
     <aside 
-        class="bg-[#07162d] text-white flex flex-col justify-between p-4 fixed h-screen z-40 transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] border-r border-slate-800 shadow-2xl w-60"
+        class="bg-[#07162d] text-white flex flex-col justify-between p-4 fixed h-screen z-40 transition-all duration-300 ease-out border-r border-slate-800 shadow-2xl w-60"
         :class="sidebarOpen ? 'translate-x-0' : '-translate-x-full'"
     >
         <div class="space-y-6">
@@ -160,8 +173,8 @@
         </div>
     </aside>
 
-    <!-- MAIN CONTENT WRAPPER DENGAN KELAS ANIMASI KELUAR -->
-    <div class="flex-1 min-h-screen flex flex-col transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] bg-slate-950" 
+    <!-- MAIN CONTENT WRAPPER -->
+    <div class="flex-1 min-h-screen flex flex-col transition-all duration-300 ease-out bg-slate-950" 
          :class="{ 'lg:ml-60': sidebarOpen, 'page-exit-animation': isExiting }"
     >
         <header class="bg-slate-900/80 backdrop-blur-md border-b border-slate-800 h-16 flex items-center justify-between px-6 sticky top-0 z-20">
@@ -170,7 +183,7 @@
                     <i class="fa-solid fa-bars text-sm"></i>
                 </button>
 
-                <!-- FORM SEARCH DENGAN REKOMENDASI TEKS SAJA -->
+                <!-- FORM SEARCH -->
                 <div class="relative hidden sm:block w-72 md:w-96" 
                      x-data="{ 
                         query: '<?php echo e(request('search')); ?>',
@@ -197,20 +210,16 @@
                             class="w-full bg-slate-800/90 border border-slate-700 rounded-2xl pl-4 pr-11 py-2 text-xs text-slate-200 focus:outline-none focus:border-teal-500 transition-all duration-300"
                             autocomplete="off"
                         >
-                        <!-- TOMBOL SEARCH DI SEBELAH KANAN -->
                         <button type="submit" class="btn-micro absolute inset-y-0 right-0 flex items-center pr-3 text-slate-400 hover:text-teal-400" title="Cari">
                             <i class="fa-solid fa-magnifying-glass text-xs"></i>
                         </button>
                     </form>
 
-                    <!-- REKOMENDASI HANYA TEKS DENGAN TRANSISI HALUS[cite: 1] -->
+                    <!-- REKOMENDASI PENCARIAN -->
                     <div x-show="focused && filtered.length > 0" 
-                         x-transition:enter="transition ease-out duration-300"
-                         x-transition:enter-start="opacity-0 scale-95 -translate-y-3"
+                         x-transition:enter="transition ease-out duration-200"
+                         x-transition:enter-start="opacity-0 scale-95 -translate-y-2"
                          x-transition:enter-end="opacity-100 scale-100 translate-y-0"
-                         x-transition:leave="transition ease-in duration-200"
-                         x-transition:leave-start="opacity-100 scale-100 translate-y-0"
-                         x-transition:leave-end="opacity-0 scale-95 -translate-y-3"
                          class="absolute top-full left-0 right-0 mt-2 bg-slate-900 border border-slate-700 rounded-2xl shadow-2xl overflow-hidden z-50 max-h-60 overflow-y-auto"
                     >
                         <div class="p-2.5 text-[10px] text-slate-400 font-bold border-b border-slate-800">
@@ -218,7 +227,7 @@
                         </div>
                         <template x-for="item in filtered" :key="item.id">
                             <a :href="'<?php echo e(url('user/destinasi')); ?>/' + item.id" 
-                               @click.prevent="isExiting = true; setTimeout(() => window.location.href = event.currentTarget.href, 750)"
+                               @click.prevent="navigateWithExit($event)"
                                class="block px-4 py-2.5 hover:bg-slate-800 transition border-b border-slate-800/50 last:border-none group"
                             >
                                 <p class="text-xs font-bold text-white group-hover:text-teal-400 transition" x-text="item.nama_destinasi"></p>
@@ -229,15 +238,20 @@
                 </div>
             </div>
 
-            <div class="flex items-center space-x-4">
+            <!-- TOMBOL TAMBAHAN DI NAVBAR (BISNIS & LEADERBOARD) -->
+            <div class="flex items-center space-x-3">
+                <!-- TOMBOL BISNIS MEMBUKA MODAL -->
+                <button @click="bisnisModalOpen = true" class="btn-micro px-3 py-1.5 rounded-xl bg-slate-800 text-slate-300 hover:text-white border border-slate-700 text-xs font-bold">Bisnis</button>
+                <button type="button" @click="leaderboardModalOpen = true" class="btn-micro px-3 py-1.5 rounded-xl bg-slate-800 text-slate-300 hover:text-white border border-slate-700 text-xs font-bold">Leaderboard</button>
+                
                 <button class="btn-micro w-9 h-9 rounded-xl bg-slate-800 text-slate-300 flex items-center justify-center border border-slate-700 hover:text-white"><i class="fa-regular fa-bell text-xs"></i></button>
             </div>
         </header>
 
         <main class="p-6 space-y-6 flex-1 max-w-7xl mx-auto w-full">
 
-            <!-- HERO BANNER SAMBUTAN USER & SOCIAL MEDIA BUTTONS[cite: 1] -->
-            <div class="animate-hero-entry relative overflow-hidden rounded-3xl bg-gradient-to-r from-slate-900 via-[#0a233c] to-slate-900 border border-slate-800/80 p-6 md:p-8 shadow-2xl glow-teal group hover:border-teal-500/40 transition duration-700">
+            <!-- HERO BANNER -->
+            <div class="animate-hero-entry relative overflow-hidden rounded-3xl bg-gradient-to-r from-slate-900 via-[#0a233c] to-slate-900 border border-slate-800/80 p-6 md:p-8 shadow-2xl glow-teal group">
                 <div class="parallax-bg-1 absolute -top-12 -right-12 w-64 h-64 bg-teal-500/10 rounded-full blur-3xl pointer-events-none"></div>
                 <div class="parallax-bg-2 absolute -bottom-10 -left-10 w-48 h-48 bg-blue-600/10 rounded-full blur-2xl pointer-events-none"></div>
                 
@@ -259,21 +273,16 @@
                         <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider block md:hidden mb-1">Ikuti Media Sosial Kami:</span>
                         
                         <div class="flex items-center gap-2.5 w-full sm:w-auto">
-                            <!-- Tombol TikTok -->
-                            <a href="https://www.tiktok.com/@brokolii_047?is_from_webapp=1&sender_device=pc" target="_blank" class="btn-micro flex-1 sm:flex-initial flex items-center justify-center gap-2 px-3.5 py-2 rounded-xl bg-slate-900/90 hover:bg-black text-slate-200 hover:text-white border border-slate-700/80 hover:border-teal-400/50 shadow-md hover:shadow-teal-500/20 hover:-translate-y-0.5 group/btn">
-                                <i class="fa-brands fa-tiktok text-sm text-cyan-400 group-hover/btn:scale-110 transition duration-300"></i>
+                            <a href="https://www.tiktok.com/@brokolii_047?is_from_webapp=1&sender_device=pc" target="_blank" class="btn-micro flex-1 sm:flex-initial flex items-center justify-center gap-2 px-3.5 py-2 rounded-xl bg-slate-900/90 hover:bg-black text-slate-200 hover:text-white border border-slate-700/80 hover:border-teal-400/50 shadow-md">
+                                <i class="fa-brands fa-tiktok text-sm text-cyan-400"></i>
                                 <span class="font-extrabold text-[11px]">TikTok</span>
                             </a>
-
-                            <!-- Tombol Instagram -->
-                            <a href="https://www.instagram.com/hey_nezhh?dlrf=ZWh4ZmxvNW4wbGE2" target="_blank" class="btn-micro flex-1 sm:flex-initial flex items-center justify-center gap-2 px-3.5 py-2 rounded-xl bg-slate-900/90 hover:bg-gradient-to-r hover:from-purple-600 hover:to-pink-600 text-slate-200 hover:text-white border border-slate-700/80 hover:border-pink-500/50 shadow-md hover:shadow-pink-500/20 hover:-translate-y-0.5 group/btn">
-                                <i class="fa-brands fa-instagram text-sm text-pink-400 group-hover/btn:text-white group-hover/btn:scale-110 transition duration-300"></i>
+                            <a href="https://www.instagram.com/hey_nezhh?dlrf=ZWh4ZmxvNW4wbGE2" target="_blank" class="btn-micro flex-1 sm:flex-initial flex items-center justify-center gap-2 px-3.5 py-2 rounded-xl bg-slate-900/90 hover:bg-gradient-to-r hover:from-purple-600 hover:to-pink-600 text-slate-200 hover:text-white border border-slate-700/80 hover:border-pink-500/50 shadow-md">
+                                <i class="fa-brands fa-instagram text-sm text-pink-400"></i>
                                 <span class="font-extrabold text-[11px]">Instagram</span>
                             </a>
-
-                            <!-- Tombol YouTube -->
-                            <a href="https://youtube.com/@lokalify-s4w?si=lq1zJuPyI18qrqrL" target="_blank" class="btn-micro flex-1 sm:flex-initial flex items-center justify-center gap-2 px-3.5 py-2 rounded-xl bg-slate-900/90 hover:bg-rose-600 text-slate-200 hover:text-white border border-slate-700/80 hover:border-rose-500/50 shadow-md hover:shadow-rose-500/20 hover:-translate-y-0.5 group/btn">
-                                <i class="fa-brands fa-youtube text-sm text-rose-500 group-hover/btn:text-white group-hover/btn:scale-110 transition duration-300"></i>
+                            <a href="https://youtube.com/@lokalify-s4w?si=lq1zJuPyI18qrqrL" target="_blank" class="btn-micro flex-1 sm:flex-initial flex items-center justify-center gap-2 px-3.5 py-2 rounded-xl bg-slate-900/90 hover:bg-rose-600 text-slate-200 hover:text-white border border-slate-700/80 hover:border-rose-500/50 shadow-md">
+                                <i class="fa-brands fa-youtube text-sm text-rose-500"></i>
                                 <span class="font-extrabold text-[11px]">YouTube</span>
                             </a>
                         </div>
@@ -283,7 +292,7 @@
 
             <!-- SECTION HEADER: DISCOVER DESTINATIONS -->
             <div class="flex justify-between items-center pt-2">
-                <h2 class="text-base font-extrabold text-white tracking-tight">Discover Destinations</h2>
+                <h2 class="text-base font-extrabold text-white tracking-tight">Kategori Wisata</h2>
                 <a href="<?php echo e(route('user.dashboard')); ?>" class="btn-micro text-xs font-bold text-teal-400 hover:underline">Show all</a>
             </div>
 
@@ -328,24 +337,23 @@
                 </template>
             </div>
 
-            <!-- GRID KARTU DESTINASI (DENGAN SCROLL REVEAL HALUS)[cite: 1] -->
+            <!-- GRID KARTU DESTINASI -->
             <div x-show="!isLoading" 
-                 x-transition:enter="transition ease-out duration-700"
+                 x-transition:enter="transition ease-out duration-300"
                  x-transition:enter-start="opacity-0"
                  x-transition:enter-end="opacity-100"
                  class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4 items-start"
             >
                 <?php if(isset($destinasi) && count($destinasi) > 0): ?>
                     <?php $__currentLoopData = $destinasi; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                        <div class="reveal-card bg-slate-900 border border-slate-800 rounded-2xl p-3.5 space-y-3 shadow-lg hover:border-teal-500/50 transition duration-500 flex flex-col justify-between h-full group/card"
-                             style="transition-delay: <?php echo e($index * 100); ?>ms;">
+                        <div class="reveal-card bg-slate-900 border border-slate-800 rounded-2xl p-3.5 space-y-3 shadow-lg hover:border-teal-500/50 transition duration-300 flex flex-col justify-between h-full group/card">
                             
                             <div class="space-y-2.5">
                                 <div class="relative w-full aspect-video rounded-xl overflow-hidden bg-slate-950">
                                     <?php if(!empty($item->foto)): ?>
-                                        <img src="<?php echo e(asset('storage/' . $item->foto)); ?>" alt="<?php echo e($item->nama_destinasi); ?>" class="w-full h-full object-cover group-hover/card:scale-110 transition duration-900 ease-out">
+                                        <img src="<?php echo e(asset('storage/' . $item->foto)); ?>" alt="<?php echo e($item->nama_destinasi); ?>" class="w-full h-full object-cover group-hover/card:scale-105 transition duration-500 ease-out">
                                     <?php else: ?>
-                                        <div class="w-full h-full bg-gradient-to-br from-teal-500 to-blue-600 flex items-center justify-center text-slate-950 font-bold group-hover/card:scale-110 transition duration-900 ease-out">
+                                        <div class="w-full h-full bg-gradient-to-br from-teal-500 to-blue-600 flex items-center justify-center text-slate-950 font-bold group-hover/card:scale-105 transition duration-500 ease-out">
                                             <i class="fa-solid fa-mountain-sun text-2xl"></i>
                                         </div>
                                     <?php endif; ?>
@@ -381,12 +389,11 @@
                                     <span><?php echo e(number_format($avgRating, 1)); ?></span>
                                     <span class="text-slate-500 font-normal">(<?php echo e($totalReviews); ?>)</span>
                                 </div>
-                                <!-- TOMBOL DETAIL WISATA DENGAN PANGGILAN ANIMASI KELUAR -->
                                 <a href="<?php echo e(route('user.destinasi.detail', $item->id)); ?>" 
-                                   @click.prevent="isExiting = true; setTimeout(() => window.location.href = event.currentTarget.href, 750)"
+                                   @click.prevent="navigateWithExit($event)"
                                    class="btn-micro px-3 py-1 bg-teal-500 hover:bg-teal-400 text-slate-950 font-extrabold rounded-lg text-[10px]"
                                 >
-                                    Detail Wisata ✨
+                                    Detail Wisata ↗
                                 </a>
                             </div>
 
@@ -401,19 +408,279 @@
         </main>
     </div>
 
-    <!-- ========================================== -->
-    <!-- FLOATING AI GEMINI BUTTON & CHATBOX[cite: 1] -->
-    <!-- ========================================== -->
-    <div class="fixed bottom-6 right-6 z-50 flex flex-col items-end">
+    <!-- MODAL POP-UP LEADERBOARD WISATA TERBAIK -->
+    <?php
+        // Hitung skor leaderboard tanpa mengubah properti objek destinasi.
+        // Persentase = total bintang / (jumlah ulasan x 5) x 100.
+        $leaderboardWisata = collect($destinasi ?? [])
+            ->filter(function ($wisata) {
+                return is_object($wisata) && isset($wisata->id);
+            })
+            ->map(function ($wisata) {
+                $ulasan = $wisata->reviews ?? collect();
+                $jumlahUlasan = $ulasan->count();
+                $totalBintang = $ulasan->sum('rating');
 
-        <!-- CHATBOX POPUP -->
-        <div x-show="aiOpen" 
-             x-transition:enter="transition cubic-bezier(0.16, 1, 0.3, 1) duration-400 transform"
-             x-transition:enter-start="opacity-0 translate-y-10 scale-95"
+                return (object) [
+                    'destinasi' => $wisata,
+                    'total_ulasan' => $jumlahUlasan,
+                    'total_bintang' => $totalBintang,
+                    'persentase' => $jumlahUlasan > 0
+                        ? ($totalBintang / ($jumlahUlasan * 5)) * 100
+                        : 0,
+                    'rating' => $jumlahUlasan > 0
+                        ? $totalBintang / $jumlahUlasan
+                        : 0,
+                ];
+            })
+            ->sort(function ($a, $b) {
+                $bedaPersentase = $b->persentase <=> $a->persentase;
+                if ($bedaPersentase !== 0) {
+                    return $bedaPersentase;
+                }
+                return $b->total_ulasan <=> $a->total_ulasan;
+            })
+            ->take(10)
+            ->values();
+    ?>
+
+    <div x-cloak x-show="leaderboardModalOpen"
+         x-transition:enter="transition ease-out duration-300"
+         x-transition:enter-start="opacity-0"
+         x-transition:enter-end="opacity-100"
+         x-transition:leave="transition ease-in duration-200"
+         x-transition:leave-start="opacity-100"
+         x-transition:leave-end="opacity-0"
+         @keydown.escape.window="leaderboardModalOpen = false"
+         class="fixed inset-0 z-[100] flex items-center justify-center p-3 sm:p-6 bg-slate-950/80 backdrop-blur-md"
+         style="display:none;"
+         role="dialog" aria-modal="true" aria-labelledby="leaderboard-title">
+        <div @click.outside="leaderboardModalOpen = false"
+             x-transition:enter="transition ease-out duration-300 transform"
+             x-transition:enter-start="opacity-0 translate-y-4 scale-95"
              x-transition:enter-end="opacity-100 translate-y-0 scale-100"
-             x-transition:leave="transition cubic-bezier(0.16, 1, 0.3, 1) duration-300 transform"
-             x-transition:leave-start="opacity-100 translate-y-0 scale-100"
-             x-transition:leave-end="opacity-0 translate-y-10 scale-95"
+             class="w-full max-w-4xl max-h-[90vh] overflow-hidden rounded-3xl bg-slate-900 border border-slate-700/80 shadow-2xl shadow-teal-950/30 flex flex-col">
+
+            <div class="relative overflow-hidden flex-shrink-0 p-5 sm:p-6 bg-gradient-to-r from-[#07162d] via-[#0a233c] to-slate-900 border-b border-slate-800">
+                <div class="absolute -top-12 -right-8 w-44 h-44 rounded-full bg-teal-500/10 blur-3xl pointer-events-none"></div>
+                <div class="relative flex items-start justify-between gap-4">
+                    <div class="flex items-start gap-3">
+                        <div class="w-11 h-11 rounded-2xl bg-teal-500/15 border border-teal-400/20 text-teal-300 flex items-center justify-center text-lg flex-shrink-0">
+                            <i class="fa-solid fa-trophy"></i>
+                        </div>
+                        <div>
+                            <p class="text-[10px] uppercase tracking-[0.2em] text-teal-400 font-extrabold mb-1">LOKALIFY • DESTINATION AWARDS</p>
+                            <h2 id="leaderboard-title" class="text-lg sm:text-xl font-black text-white">Leaderboard Wisata Terbaik</h2>
+                            <p class="text-[11px] sm:text-xs text-slate-400 mt-1">10 destinasi teratas berdasarkan persentase rating dari seluruh ulasan.</p>
+                        </div>
+                    </div>
+                    <button type="button" @click="leaderboardModalOpen = false" aria-label="Tutup leaderboard"
+                            class="btn-micro w-9 h-9 rounded-xl bg-slate-800 hover:bg-rose-500/15 text-slate-400 hover:text-rose-300 border border-slate-700 flex items-center justify-center flex-shrink-0">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+                </div>
+                <div class="relative mt-4 flex flex-wrap gap-2 text-[10px] font-semibold">
+                    <span class="inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 bg-teal-500/10 border border-teal-500/20 text-teal-300"><i class="fa-solid fa-chart-line"></i> Skor berdasarkan persentase bintang</span>
+                    <span class="inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 bg-slate-800/80 border border-slate-700 text-slate-300"><i class="fa-solid fa-star text-amber-400"></i> Maksimal 100%</span>
+                </div>
+            </div>
+
+            <div class="overflow-y-auto p-3 sm:p-5 space-y-2.5">
+                <?php $__empty_1 = true; $__currentLoopData = $leaderboardWisata; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $wisata): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
+                    <div class="group flex items-center gap-3 sm:gap-4 p-3 sm:p-4 rounded-2xl bg-slate-950/60 border border-slate-800 hover:border-teal-500/40 hover:bg-slate-800/60 transition duration-200">
+                        <div class="w-8 sm:w-10 flex-shrink-0 text-center">
+                            <?php if($index === 0): ?>
+                                <div class="w-8 h-8 sm:w-10 sm:h-10 mx-auto rounded-xl bg-amber-400/15 border border-amber-400/30 text-amber-300 flex items-center justify-center font-black"><i class="fa-solid fa-crown"></i></div>
+                            <?php elseif($index === 1): ?>
+                                <div class="w-8 h-8 sm:w-10 sm:h-10 mx-auto rounded-xl bg-slate-300/10 border border-slate-300/20 text-slate-200 flex items-center justify-center font-black">2</div>
+                            <?php elseif($index === 2): ?>
+                                <div class="w-8 h-8 sm:w-10 sm:h-10 mx-auto rounded-xl bg-orange-500/10 border border-orange-400/20 text-orange-300 flex items-center justify-center font-black">3</div>
+                            <?php else: ?>
+                                <span class="text-sm font-black text-slate-500"><?php echo e(str_pad($index + 1, 2, '0', STR_PAD_LEFT)); ?></span>
+                            <?php endif; ?>
+                        </div>
+
+                        <div class="w-16 h-14 sm:w-24 sm:h-16 rounded-xl overflow-hidden bg-slate-800 border border-slate-700 flex-shrink-0">
+                            <?php if(!empty($wisata->destinasi->foto)): ?>
+                                <img src="<?php echo e(asset('storage/' . $wisata->destinasi->foto)); ?>" alt="<?php echo e($wisata->destinasi->nama_destinasi); ?>" class="w-full h-full object-cover group-hover:scale-105 transition duration-300">
+                            <?php else: ?>
+                                <div class="w-full h-full flex items-center justify-center text-teal-400"><i class="fa-solid fa-mountain-sun text-xl"></i></div>
+                            <?php endif; ?>
+                        </div>
+
+                        <div class="min-w-0 flex-1">
+                            <h3 class="text-xs sm:text-sm font-extrabold text-white truncate group-hover:text-teal-300 transition"><?php echo e($wisata->destinasi->nama_destinasi); ?></h3>
+                            <p class="text-[10px] text-slate-500 truncate mt-1"><i class="fa-solid fa-location-dot text-teal-500 mr-1"></i><?php echo e($wisata->destinasi->alamat ?? 'Lokasi belum tersedia'); ?></p>
+                            <div class="mt-2 flex items-center gap-3 flex-wrap text-[10px]">
+                                <span class="text-amber-400 font-bold"><i class="fa-solid fa-star mr-1"></i><?php echo e(number_format($wisata->rating, 1)); ?>/5</span>
+                                <span class="text-slate-400"><i class="fa-regular fa-comment-dots mr-1"></i><?php echo e(number_format($wisata->total_ulasan)); ?> ulasan</span>
+                            </div>
+                        </div>
+
+                        <div class="w-20 sm:w-32 flex-shrink-0 text-right">
+                            <p class="text-sm sm:text-base font-black <?php echo e($index === 0 ? 'text-teal-300' : 'text-white'); ?>"><?php echo e(number_format($wisata->persentase, 1)); ?>%</p>
+                            <div class="h-1.5 sm:h-2 mt-2 rounded-full bg-slate-800 overflow-hidden">
+                                <div class="h-full rounded-full bg-gradient-to-r from-teal-500 to-emerald-300" style="width: <?php echo e(min(100, max(0, $wisata->persentase))); ?>%"></div>
+                            </div>
+                            <p class="hidden sm:block text-[9px] text-slate-500 mt-1"><?php echo e(number_format($wisata->total_bintang)); ?> dari <?php echo e($wisata->total_ulasan * 5); ?> bintang</p>
+                        </div>
+                    </div>
+                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
+                    <div class="py-12 text-center rounded-2xl bg-slate-950/50 border border-dashed border-slate-700">
+                        <div class="w-14 h-14 mx-auto rounded-2xl bg-slate-800 text-slate-500 flex items-center justify-center text-xl mb-3"><i class="fa-solid fa-trophy"></i></div>
+                        <h3 class="text-sm font-extrabold text-white">Belum ada destinasi wisata</h3>
+                        <p class="text-xs text-slate-400 mt-1">Destinasi yang tersedia akan muncul di leaderboard ini.</p>
+                    </div>
+                <?php endif; ?>
+            </div>
+
+            <div class="flex-shrink-0 flex items-center justify-between gap-3 p-4 sm:px-6 border-t border-slate-800 bg-slate-950/70">
+                <p class="text-[9px] sm:text-[10px] text-slate-500 leading-relaxed">Rumus: total bintang ÷ (jumlah ulasan × 5) × 100%.</p>
+                <button type="button" @click="leaderboardModalOpen = false" class="btn-micro px-4 py-2 rounded-xl bg-teal-500 hover:bg-teal-400 text-slate-950 font-extrabold text-xs flex-shrink-0">Selesai</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL POP-UP BISNIS LOKALIFY -->
+    <div x-show="bisnisModalOpen" 
+         x-transition:enter="transition ease-out duration-300"
+         x-transition:enter-start="opacity-0"
+         x-transition:enter-end="opacity-100"
+         x-transition:leave="transition ease-in duration-200"
+         x-transition:leave-start="opacity-100"
+         x-transition:leave-end="opacity-0"
+         class="fixed inset-0 bg-slate-950/80 backdrop-blur-md z-50 flex items-center justify-center p-4"
+         style="display: none;"
+    >
+        <div @click.outside="bisnisModalOpen = false" 
+             class="bg-slate-900 border border-slate-800 rounded-3xl w-full max-w-2xl max-h-[90vh] flex flex-col shadow-2xl overflow-hidden glow-teal animate-hero-entry"
+        >
+            <!-- Header Modal -->
+            <div class="bg-gradient-to-r from-slate-900 via-[#07162d] to-slate-900 border-b border-slate-800 p-5 flex items-center justify-between">
+                <div class="flex items-center space-x-3">
+                    <div class="w-9 h-9 rounded-xl bg-teal-500 text-slate-950 flex items-center justify-center font-black text-sm shadow-lg shadow-teal-500/20">
+                        <i class="fa-solid fa-briefcase"></i>
+                    </div>
+                <div>
+                        <h3 class="font-black text-white text-sm">Kemitraan Bisnis Lokalify</h3>
+                        <p class="text-[10px] text-teal-400 font-semibold">Pusat Layanan Promosi Destinasi Wisata</p>
+                    </div>
+                </div>
+                <button @click="bisnisModalOpen = false" class="btn-micro w-8 h-8 rounded-xl bg-slate-800 text-slate-400 hover:text-white flex items-center justify-center border border-slate-700">
+                    <i class="fa-solid fa-xmark text-sm"></i>
+                </button>
+            </div>
+
+            <!-- Konten Modal yang Dapat Di-scroll -->
+            <div class="p-6 space-y-6 overflow-y-auto no-scrollbar text-xs">
+                
+                <!-- Hero Text / Sambutan -->
+                <div class="space-y-2 bg-slate-800/50 border border-slate-800 rounded-2xl p-4">
+                    <h4 class="font-extrabold text-teal-400 text-sm tracking-tight">Jadikan Destinasi Wisatamu Lebih Dikenal!</h4>
+                    <p class="text-slate-300 leading-relaxed text-[11px]">
+                        Promosikan tempat wisatamu melalui <strong class="text-white">LOKALIFY</strong>. Jangkau lebih banyak calon pengunjung, tampilkan informasi destinasi secara lengkap, dan bantu wisatawan menemukan tempat terbaik untuk petualangan mereka.
+                    </p>
+                </div>
+
+                <!-- Syarat Menambahkan Wisata -->
+                <div class="space-y-3">
+                    <h5 class="font-extrabold text-white uppercase tracking-wider text-[11px] flex items-center gap-2 border-b border-slate-800 pb-2">
+                        <i class="fa-solid fa-clipboard-check text-teal-400"></i> Syarat Menambahkan Wisata
+                    </h5>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <div class="bg-slate-800/40 border border-slate-800 p-3 rounded-xl space-y-1">
+                            <span class="text-[10px] font-black text-teal-400">01</span>
+                            <h6 class="font-bold text-white text-[11px]">Memiliki Destinasi Wisata yang Jelas</h6>
+                            <p class="text-slate-400 text-[10px] leading-relaxed">Destinasi harus benar-benar ada dan dapat dikunjungi atau diverifikasi keberadaannya.</p>
+                        </div>
+                        <div class="bg-slate-800/40 border border-slate-800 p-3 rounded-xl space-y-1">
+                            <span class="text-[10px] font-black text-teal-400">02</span>
+                            <h6 class="font-bold text-white text-[11px]">Mengisi Informasi Secara Lengkap</h6>
+                            <p class="text-slate-400 text-[10px] leading-relaxed">Cantumkan nama wisata, alamat, deskripsi, fasilitas, daya tarik, dan informasi pendukung lainnya.</p>
+                        </div>
+                        <div class="bg-slate-800/40 border border-slate-800 p-3 rounded-xl space-y-1">
+                            <span class="text-[10px] font-black text-teal-400">03</span>
+                            <h6 class="font-bold text-white text-[11px]">Menggunakan Foto yang Sesuai</h6>
+                            <p class="text-slate-400 text-[10px] leading-relaxed">Unggah foto asli atau foto yang memiliki izin penggunaan dan menggambarkan kondisi destinasi.</p>
+                        </div>
+                        <div class="bg-slate-800/40 border border-slate-800 p-3 rounded-xl space-y-1">
+                            <span class="text-[10px] font-black text-teal-400">04</span>
+                            <h6 class="font-bold text-white text-[11px]">Memberikan Informasi yang Akurat</h6>
+                            <p class="text-slate-400 text-[10px] leading-relaxed">Pastikan informasi harga tiket, jam operasional, fasilitas, dan lokasi sesuai kondisi sebenarnya.</p>
+                        </div>
+                    </div>
+                    <div class="bg-slate-800/40 border border-slate-800 p-3 rounded-xl space-y-1">
+                        <span class="text-[10px] font-black text-teal-400">05</span>
+                        <h6 class="font-bold text-white text-[11px]">Menyetujui Proses Verifikasi</h6>
+                        <p class="text-slate-400 text-[10px] leading-relaxed">Bersedia mengikuti pemeriksaan oleh tim LOKALIFY sebelum destinasi ditampilkan secara publik.</p>
+                    </div>
+                </div>
+
+                <!-- Keuntungan Bergabung dengan LOKALIFY -->
+                <div class="space-y-3">
+                    <h5 class="font-extrabold text-white uppercase tracking-wider text-[11px] flex items-center gap-2 border-b border-slate-800 pb-2">
+                        <i class="fa-solid fa-chart-line text-teal-400"></i> Keuntungan Bergabung dengan LOKALIFY
+                    </h5>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <div class="bg-slate-800/40 border border-slate-800 p-3 rounded-xl space-y-1">
+                            <h6 class="font-bold text-teal-300 text-[11px]">Jangkauan Pengunjung Lebih Luas</h6>
+                            <p class="text-slate-400 text-[10px] leading-relaxed">Bantu lebih banyak wisatawan menemukan destinasi yang kamu kelola melalui platform informasi wisata.</p>
+                        </div>
+                        <div class="bg-slate-800/40 border border-slate-800 p-3 rounded-xl space-y-1">
+                            <h6 class="font-bold text-teal-300 text-[11px]">Promosi Destinasi Lebih Informatif</h6>
+                            <p class="text-slate-400 text-[10px] leading-relaxed">Tampilkan foto, deskripsi, daya tarik, fasilitas, lokasi, dan informasi penting dalam satu halaman.</p>
+                        </div>
+                        <div class="bg-slate-800/40 border border-slate-800 p-3 rounded-xl space-y-1">
+                            <h6 class="font-bold text-teal-300 text-[11px]">Mudah Ditemukan Wisatawan</h6>
+                            <p class="text-slate-400 text-[10px] leading-relaxed">Bantu calon pengunjung mengenal destinasi dan merencanakan perjalanan mereka.</p>
+                        </div>
+                        <div class="bg-slate-800/40 border border-slate-800 p-3 rounded-xl space-y-1">
+                            <h6 class="font-bold text-teal-300 text-[11px]">Kelola Informasi Destinasi</h6>
+                            <p class="text-slate-400 text-[10px] leading-relaxed">Perbarui informasi wisata agar pengunjung memperoleh informasi yang relevan dan terkini.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tombol WhatsApp Pilihan -->
+                <div class="pt-4 border-t border-slate-800 space-y-3">
+                    <p class="text-center font-bold text-slate-300 text-[11px]">Silakan hubungi tim kami melalui WhatsApp untuk melanjutkan proses pendaftaran bisnis:</p>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <!-- Despian Ananda -->
+                        <a href="https://wa.me/628981345475?text=Halo%20Despian%20Ananda,%20saya%20ingin%20mendaftarkan%20destinasi%20wisata%20saya%20di%20Lokalify." 
+                           target="_blank" 
+                           class="btn-micro flex items-center justify-center gap-2.5 p-3 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-extrabold shadow-lg shadow-emerald-600/20 transition"
+                        >
+                            <i class="fa-brands fa-whatsapp text-base"></i>
+                            <div class="text-left">
+                                <p class="text-[11px] font-black leading-tight">Despian Ananda</p>
+                                <p class="text-[10px] font-normal text-emerald-100">+62 898-1345-475</p>
+                            </div>
+                        </a>
+
+                        <!-- Irvan Zainudin Ilham -->
+                        <a href="https://wa.me/6283834041347?text=Halo%20Irvan%20Zainudin%20Ilham,%20saya%20ingin%20mendaftarkan%20destinasi%20wisata%20saya%20di%20Lokalify." 
+                           target="_blank" 
+                           class="btn-micro flex items-center justify-center gap-2.5 p-3 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-extrabold shadow-lg shadow-emerald-600/20 transition"
+                        >
+                            <i class="fa-brands fa-whatsapp text-base"></i>
+                            <div class="text-left">
+                                <p class="text-[11px] font-black leading-tight">Irvan Zainudin Ilham</p>
+                                <p class="text-[10px] font-normal text-emerald-100">+62 838-3404-1347</p>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- FLOATING AI GEMINI BUTTON & CHATBOX -->
+    <div class="fixed bottom-6 right-6 z-50 flex flex-col items-end">
+        <div x-show="aiOpen" 
+             x-transition:enter="transition ease-out duration-300 transform"
+             x-transition:enter-start="opacity-0 translate-y-6 scale-95"
+             x-transition:enter-end="opacity-100 translate-y-0 scale-100"
              class="mb-4 w-80 md:w-96 bg-slate-900 border border-slate-800 rounded-2xl shadow-2xl overflow-hidden flex flex-col h-[450px] glow-teal"
              style="display: none;"
         >
@@ -434,11 +701,8 @@
 
             <div id="aiChatBox" class="flex-1 p-3.5 overflow-y-auto space-y-3 text-xs no-scrollbar">
                 <div class="bg-slate-800/80 border border-slate-700/60 rounded-xl p-3 text-slate-200 max-w-[85%] leading-relaxed animate-hero-entry">
-                    Halo <?php echo e(auth()->user()->name ?? 'Petualang'); ?>! 👋<br>
-                    Ada yang ingin kamu tanyakan seputar destinasi wisata, rekomendasi tempat liburan,
-                    penginapan, atau mencari tempat wisata terbaik di sekitarmu? 🗺️
-
-                    Lokalify AI siap membantu merencanakan liburanmu! ✨
+                    Halo <?php echo e(auth()->user()->name ?? 'Petualang'); ?>! ✨<br>
+                    Ada yang ingin kamu tanyakan seputar destinasi wisata, rekomendasi tempat liburan, atau penginapan? 💡🚀
                 </div>
             </div>
 
@@ -458,18 +722,17 @@
             </div>
         </div>
 
-        <!-- FLOATING BUTTON -->
         <button 
             @click="aiOpen = !aiOpen"
             class="animate-float-ai btn-micro flex items-center gap-2.5 px-4 py-3 bg-gradient-to-r from-teal-500 to-emerald-500 hover:from-teal-400 hover:to-emerald-400 text-slate-950 font-extrabold rounded-full shadow-2xl shadow-teal-500/30 transition transform hover:scale-105"
             title="Tanya AI Lokalify"
         >
             <i class="fa-solid fa-wand-magic-sparkles text-sm"></i>
-            <span class="text-xs tracking-wide">Tanya AI</span>
+            <span class="text-xs tracking-wide">LOKALIFY AI</span>
         </button>
     </div>
 
-    <!-- JAVASCRIPT INTEGRASI AI & INTERSECTION OBSERVER[cite: 1] -->
+    <!-- JAVASCRIPT -->
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const observerOptions = { threshold: 0.1 };
@@ -542,10 +805,10 @@
                 loadingEl.remove();
 
                 if (!response.ok) {
-                    throw new Error(data.message || 'AI belum dapat menjawab. Periksa konfigurasi Gemini di server.');
+                    throw new Error(data.message || 'AI belum dapat menjawab.');
                 }
 
-                const aiReply = data.reply || 'Maaf, AI belum memberikan jawaban. Silakan coba lagi.';
+                const aiReply = data.reply || 'Maaf, AI belum memberikan jawaban.';
 
                 chatHistory.push({ role: 'user', text: userMessage });
                 chatHistory.push({ role: 'model', text: aiReply });
@@ -559,9 +822,8 @@
                 if (loadingEl.isConnected) loadingEl.remove();
                 const errorEl = document.createElement('div');
                 errorEl.className = 'bg-rose-950/50 border border-rose-800/50 rounded-xl p-3 text-rose-300 max-w-[85%] animate-hero-entry';
-                errorEl.textContent = error.message || 'Terjadi kesalahan koneksi. Silakan coba lagi.';
+                errorEl.textContent = error.message || 'Terjadi kesalahan koneksi.';
                 chatBox.appendChild(errorEl);
-                console.error('Lokalify AI request failed:', error);
             } finally {
                 sendBtn.disabled = false;
                 sendBtn.classList.remove('opacity-60', 'cursor-not-allowed');

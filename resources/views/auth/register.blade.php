@@ -20,7 +20,7 @@
                 📍
             </div>
             <h1 class="text-2xl font-extrabold text-slate-800 tracking-tight">Bergabung dengan Lokalify</h1>
-            <p class="text-xs text-slate-500 mt-1 font-medium">Temukan destinasi lokal atau kelola wisata sebagai admin 🗺️</p>
+            <p class="text-xs text-slate-500 mt-1 font-medium">Temukan berbagai destinasi wisata menarik 🗺️</p>
         </div>
 
         @if ($errors->any())
@@ -30,10 +30,12 @@
             </div>
         @endif
 
-        <!-- Tambahkan id="registerForm" -->
         <form id="registerForm" action="/register" method="POST" class="space-y-4">
             @csrf
             
+            <!-- Default role langsung diset sebagai user -->
+            <input type="hidden" name="role" value="user">
+
             <div>
                 <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">Nama Lengkap</label>
                 <input type="text" name="name" value="{{ old('name') }}" required placeholder="Contoh: Budi Santoso"
@@ -59,27 +61,6 @@
                 </div>
             </div>
 
-            <div class="pt-2">
-                <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Daftar Sebagai 👥</label>
-                <div class="grid grid-cols-2 gap-3">
-                    <label class="flex items-center justify-center gap-2 p-3 border-2 border-slate-200 rounded-xl cursor-pointer hover:border-emerald-500 transition text-sm font-semibold text-slate-700">
-                        <input type="radio" name="role" value="user" {{ old('role', 'user') === 'user' ? 'checked' : '' }} onchange="handleRoleChange()" class="accent-emerald-600">
-                        <span>User Biasa 🧳</span>
-                    </label>
-                    <label class="flex items-center justify-center gap-2 p-3 border-2 border-slate-200 rounded-xl cursor-pointer hover:border-emerald-500 transition text-sm font-semibold text-slate-700">
-                        <input type="radio" name="role" value="admin" {{ old('role') === 'admin' ? 'checked' : '' }} onchange="handleRoleChange()" class="accent-emerald-600">
-                        <span>Admin 🛡️</span>
-                    </label>
-                </div>
-            </div>
-
-            <div id="secretCodeBox" class="{{ old('role') === 'admin' ? '' : 'hidden' }} transition-all duration-300">
-                <label class="block text-xs font-bold text-amber-700 uppercase tracking-wider mb-1">🔐 Kode Rahasia Admin</label>
-                <input type="password" name="secret_code" placeholder="Masukkan kode rahasia admin"
-                    class="w-full px-4 py-3 bg-amber-50/70 border border-amber-300 rounded-xl focus:ring-2 focus:ring-amber-500 focus:bg-white focus:outline-none text-slate-800 text-sm transition">
-            </div>
-
-            <!-- Tombol dengan ID submitBtnReg -->
             <button type="submit" id="submitBtnReg" 
                 class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3.5 px-4 rounded-xl shadow-lg shadow-emerald-600/30 transition duration-200 flex items-center justify-center gap-2 text-sm mt-4">
                 <span id="btnTextReg">Daftar Akun Sekarang ✨</span>
@@ -97,16 +78,6 @@
     </div>
 
     <script>
-        function handleRoleChange() {
-            const isAdmin = document.querySelector('input[name="role"][value="admin"]').checked;
-            const box = document.getElementById('secretCodeBox');
-            if (isAdmin) {
-                box.classList.remove('hidden');
-            } else {
-                box.classList.add('hidden');
-            }
-        }
-
         // Script Animasi Loading Register
         document.getElementById('registerForm').addEventListener('submit', function(e) {
             const btn = document.getElementById('submitBtnReg');
