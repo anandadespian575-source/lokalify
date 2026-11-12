@@ -1,59 +1,158 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# 🏔️ Lokalify — Platform Informasi Wisata Terkini
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+![Laravel Version](https://img.shields.io/badge/Laravel-FF2D20?style=for-the-badge&logo=laravel&logoColor=white)
+![MySQL Version](https://img.shields.io/badge/MySQL-4479A1?style=for-the-badge&logo=mysql&logoColor=white)
+![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
+![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white)
+![Status](https://img.shields.io/badge/Status-Development%20%2F%20UKK%20Ready-success?style=for-the-badge)
 
-## About Laravel
+**Lokalify** adalah platform berbasis web yang menyediakan informasi *up to date* seputar destinasi tempat wisata lokal. Aplikasi ini memudahkan masyarakat dan pengelana untuk menjelajahi tempat wisata populer, mendapatkan rekomendasi menarik, serta membantu administrator dalam mengelola katalog tempat wisata secara efisien dan cepat.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+---
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## 🚀 Fitur Utama
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+### 👤 Bagi Pengguna (User)
+* **Register & Login**: Pembuatan akun baru dan autentikasi masuk yang aman.
+* **Dashboard Wisata**: Halaman utama berbasis katalog tempat wisata pilihan dan informasi ter-update.
+* **Detail Destinasi**: Halaman rinci berisi galeri foto, deskripsi, lokasi, dan informasi operasional tempat wisata.
 
-## Learning Laravel
+### 🛡️ Bagi Pengelola (Administrator)
+* **Admin Authentication**: Akses khusus halaman manajemen pengelola.
+* **Dashboard Monitoring**: Ringkasan data tempat wisata dan statistik umum.
+* **Manajemen Wisata (CRUD)**:
+  * **Create**: Menambahkan data tempat wisata baru lengkap dengan gambar dan deskripsi.
+  * **Read**: Melihat daftar dan status publikasi tempat wisata.
+  * **Update**: Mengubah detail data wisata jika ada pembaruan informasi.
+  * **Delete**: Menghapus data wisata yang sudah tidak relevan.
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+---
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+## 🛠️ Tech Stack & Alat Pengembangan
 
-## Laravel Sponsors
+* **Backend Engine**: [PHP](https://www.php.net/) (Laravel Framework)
+* **Database Management System**: [MySQL](https://www.mysql.com/)
+* **Frontend**: HTML5, CSS3, JavaScript
+* **Development Server**: PHP Artisan Local Engine (`php artisan serve`)
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+---
 
-### Premium Partners
+## 📂 Struktur Direktori Proyek
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+```text
+lokalify/
+├── app/
+│   ├── Http/
+│   │   ├── Controllers/        # Controller untuk Logika User & Admin
+│   │   └── Middleware/         # Validasi Akses & Role User/Admin
+│   └── Models/                 # Eloquent Models (Wisata, User, dll.)
+├── config/                     # Konfigurasi Aplikasi & Database
+├── database/
+│   ├── migrations/             # Skema Tabel Database MySQL
+│   └── seeders/                # Sample Data Dummy / Admin Default
+├── public/
+│   ├── css/                    # File Styling CSS
+│   ├── js/                     # Scripts Client-side JavaScript
+│   └── uploads/                # Berkas Media / Gambar Wisata
+├── resources/
+│   └── views/                  # Blade Templates (Dashboard, Detail, Form Admin)
+├── routes/
+│   └── web.php                 # Routing Alur User & Admin
+└── .env.example                # Templat Konfigurasi Environment
+```
 
-## Contributing
+---
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+## 💻 Panduan Instalasi & Setup Lokal
 
-## Code of Conduct
+Ikuti langkah-langkah di bawah ini untuk menjalankan repositori proyek di lingkungan lokal Anda:
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+### 1. Prerequisites (Prasyarat)
+Pastikan perangkat Anda telah terpasang:
+* **PHP** (>= 8.1)
+* **Composer**
+* **MySQL Database Server** (via XAMPP/Laragon/Native)
 
-## Security Vulnerabilities
+### 2. Kloning Repositori
+```bash
+git clone https://github.com/username/lokalify.git
+cd lokalify
+```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+### 3. Instal Dependensi Composer
+```bash
+composer install
+```
 
-## License
+### 4. Konfigurasi Environment (`.env`)
+Salin berkas contoh `.env.example` menjadi `.env`:
+```bash
+cp .env.example .env
+```
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+Atur kredensial database pada berkas `.env` sesuai dengan konfigurasi database MySQL lokal Anda:
+```env
+APP_NAME=Lokalify
+APP_ENV=local
+APP_KEY=
+APP_DEBUG=true
+APP_URL=http://127.0.0.1:8000
+
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=lokalify_db
+DB_USERNAME=root
+DB_PASSWORD=
+```
+
+### 5. Generate Application Key
+```bash
+php artisan key:generate
+```
+
+### 6. Migrasi & Seeding Database
+Jalankan perintah migrasi untuk membuat struktur tabel di MySQL:
+```bash
+php artisan migrate --seed
+```
+
+### 7. Jalankan Server Lokal
+```bash
+php artisan serve
+```
+Buka peramban (browser) dan akses alamat: `http://127.0.0.1:8000`
+
+---
+
+## 🔄 Alur Kerja Sistem (Workflow)
+
+```mermaid
+graph TD
+    A[Pengunjung Web] --> B{Pilih Role}
+    
+    %% Alur User
+    B -->|User| C[Registrasi / Login]
+    C --> D[Dashboard Utama]
+    D --> E[Lihat Detail Tempat Wisata]
+    E --> F[Selesai]
+
+    %% Alur Admin
+    B -->|Admin| G[Login Admin]
+    G --> H[Dashboard Admin]
+    H --> I[Kelola Data Wisata - CRUD]
+    I --> F
+```
+
+---
+
+## 👥 Tim & Pengembang
+
+* **Pengembang**: Despian Ananda (Siswa RPL 2026/2027)
+* **Proyek**: UKK READY — Monitoring & Assessment System (SMK Budi Bakti)
+
+---
+
+## 📄 Lisensi
+
+Proyek ini dibangun untuk tujuan pemenuhan tugas Uji Kompetensi Keahlian (UKK) Rekayasa Perangkat Lunak.
