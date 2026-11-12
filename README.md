@@ -148,7 +148,7 @@ graph TD
 
 ## 👥 Tim & Pengembang
 
-* **Pengembang**: Despian Ananda (Siswa RPL 2026/2027)
+* **Pengembang**: Despian Ananda(Backend) & Irvan Zaenudin Ilham(Frontend) (Siswa RPL 2026/2027)
 * **Proyek**: UKK READY — Monitoring & Assessment System (SMK Budi Bakti)
 
 ---
