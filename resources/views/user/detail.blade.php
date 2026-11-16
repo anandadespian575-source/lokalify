@@ -498,7 +498,7 @@
             }
         });
 
-        // Mengurutkan daftar ulasan berdasarkan rating terbaru atau rating tertinggi
+        // Mengurutkan daftar ulasan berdasarkan rating terbaru atau tertinggi
         function sortReviews(mode) {
             const list = document.getElementById('reviewList');
             const btnTerbaru = document.getElementById('btnSortTerbaru');
