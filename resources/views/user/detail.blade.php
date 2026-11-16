@@ -233,6 +233,13 @@
             $ratingPercentage = round(($avgRating / 5) * 100);
             $latestReview = $reviewItems->sortByDesc('created_at')->first();
             $highestReview = $reviewItems->sortByDesc('rating')->sortByDesc('created_at')->first();
+
+            // Batas maksimal rating per user untuk destinasi ini
+            $maxUserRatings = 2;
+            $currentUserId = auth()->id();
+            $userReviewCount = $userReviewCount
+                ?? ($currentUserId ? $reviewItems->where('user_id', $currentUserId)->count() : 0);
+            $remainingRatings = max(0, $maxUserRatings - $userReviewCount);
         @endphp
 
         <div class="scroll-reveal space-y-3.5 pt-2">
@@ -321,47 +328,70 @@
             </div>
         </div>
 
-        {{-- Form kirim komentar ulasan dengan validasi minimal 10 karakter --}}
+        {{-- Form kirim komentar ulasan dengan batas maksimal 2x rating per user --}}
         <div class="scroll-reveal bg-slate-950/70 p-4.5 rounded-2xl border border-slate-800/80 space-y-3 shadow-sm">
-            <h4 class="font-bold text-white text-xs flex items-center gap-1.5">
-                <i class="fa-solid fa-pen-nib text-teal-400"></i>
-                <span>Beri Ulasan Kamu</span>
-            </h4>
-            <form id="reviewForm" action="{{ route('user.review.store', $destinasi->id) }}" method="POST" class="space-y-3">
-                @csrf
-                <div>
-                    <label class="block text-[11px] text-slate-400 mb-1 font-medium">Rating Bintang:</label>
-                    <select name="rating" class="w-full bg-slate-900 border border-slate-800 text-white rounded-xl px-3.5 py-2.5 text-xs focus:outline-none focus:border-teal-500 transition">
-                        <option value="5">⭐⭐⭐⭐⭐ 5 Star</option>
-                        <option value="4">⭐⭐⭐⭐ 4 Star</option>
-                        <option value="3">⭐⭐⭐ 3 Star</option>
-                        <option value="2">⭐⭐ 2 Star</option>
-                        <option value="1">⭐ 1 Star</option>
-                    </select>
-                </div>
-                <div>
-                    <div class="flex justify-between items-center mb-1">
-                        <label class="block text-[11px] text-slate-400 font-medium">Komentar / Pengalaman:</label>
-                        <span id="komentarCounter" class="text-[10px] text-slate-500">0 / min. 10 karakter</span>
+            <div class="flex flex-wrap justify-between items-center gap-2">
+                <h4 class="font-bold text-white text-xs flex items-center gap-1.5">
+                    <i class="fa-solid fa-pen-nib text-teal-400"></i>
+                    <span>Beri Ulasan Kamu</span>
+                </h4>
+                <span class="text-[10px] font-semibold px-2.5 py-1 rounded-lg bg-slate-900 border border-slate-800 {{ $remainingRatings > 0 ? 'text-teal-400' : 'text-amber-400' }}">
+                    Kuota rating: {{ $userReviewCount }} / {{ $maxUserRatings }} kali
+                </span>
+            </div>
+
+            @if ($userReviewCount >= $maxUserRatings)
+                <div class="bg-amber-500/10 border border-amber-500/30 text-amber-300 p-3.5 rounded-xl text-xs flex items-start space-x-2.5">
+                    <i class="fa-solid fa-circle-info text-amber-400 mt-0.5"></i>
+                    <div>
+                        <p class="font-bold">Batas Rating Tercapai (2/2)</p>
+                        <p class="text-[11px] text-amber-200/80 mt-0.5">
+                            Kamu sudah memberikan rating sebanyak {{ $maxUserRatings }} kali untuk destinasi ini. Setiap pengguna maksimal hanya dapat memberi rating 2 kali per destinasi.
+                        </p>
                     </div>
-                    <textarea
-                        id="komentarInput"
-                        name="komentar"
-                        rows="2"
-                        minlength="10"
-                        required
-                        placeholder="Tuliskan ulasan kamu (minimal 10 karakter)..."
-                        class="w-full bg-slate-900 border border-slate-800 text-white rounded-xl p-3.5 text-xs focus:outline-none focus:border-teal-500 transition placeholder-slate-500"
-                    >{{ old('komentar') }}</textarea>
-                    <p id="komentarError" class="hidden text-[11px] text-rose-400 mt-1 flex items-center gap-1">
-                        <i class="fa-solid fa-circle-exclamation text-[10px]"></i>
-                        <span>Komentar minimal harus 10 karakter (tanpa spasi berlebih di awal/akhir).</span>
-                    </p>
                 </div>
-                <button type="submit" class="btn-micro w-full py-2.5 bg-teal-500 hover:bg-teal-400 text-slate-950 font-extrabold rounded-xl text-xs transition shadow-md shadow-teal-500/10">
-                    Kirim Ulasan
-                </button>
-            </form>
+            @else
+                <form id="reviewForm"
+                      action="{{ route('user.review.store', $destinasi->id) }}"
+                      method="POST"
+                      data-user-review-count="{{ $userReviewCount }}"
+                      data-max-ratings="{{ $maxUserRatings }}"
+                      class="space-y-3">
+                    @csrf
+                    <div>
+                        <label class="block text-[11px] text-slate-400 mb-1 font-medium">Rating Bintang:</label>
+                        <select name="rating" class="w-full bg-slate-900 border border-slate-800 text-white rounded-xl px-3.5 py-2.5 text-xs focus:outline-none focus:border-teal-500 transition">
+                            <option value="5">⭐⭐⭐⭐⭐ 5 Star</option>
+                            <option value="4">⭐⭐⭐⭐ 4 Star</option>
+                            <option value="3">⭐⭐⭐ 3 Star</option>
+                            <option value="2">⭐⭐ 2 Star</option>
+                            <option value="1">⭐ 1 Star</option>
+                        </select>
+                    </div>
+                    <div>
+                        <div class="flex justify-between items-center mb-1">
+                            <label class="block text-[11px] text-slate-400 font-medium">Komentar / Pengalaman:</label>
+                            <span id="komentarCounter" class="text-[10px] text-slate-500">0 / min. 10 karakter</span>
+                        </div>
+                        <textarea
+                            id="komentarInput"
+                            name="komentar"
+                            rows="2"
+                            minlength="10"
+                            required
+                            placeholder="Tuliskan ulasan kamu (minimal 10 karakter)..."
+                            class="w-full bg-slate-900 border border-slate-800 text-white rounded-xl p-3.5 text-xs focus:outline-none focus:border-teal-500 transition placeholder-slate-500"
+                        >{{ old('komentar') }}</textarea>
+                        <p id="komentarError" class="hidden text-[11px] text-rose-400 mt-1 flex items-center gap-1">
+                            <i class="fa-solid fa-circle-exclamation text-[10px]"></i>
+                            <span>Komentar minimal harus 10 karakter (tanpa spasi berlebih di awal/akhir).</span>
+                        </p>
+                    </div>
+                    <button type="submit" class="btn-micro w-full py-2.5 bg-teal-500 hover:bg-teal-400 text-slate-950 font-extrabold rounded-xl text-xs transition shadow-md shadow-teal-500/10">
+                        Kirim Ulasan (Sisa {{ $remainingRatings }}x)
+                    </button>
+                </form>
+            @endif
         </div>
 
         @if($destinasi->link_maps)
@@ -486,6 +516,15 @@
                 updateKomentarUI();
 
                 reviewForm.addEventListener('submit', function (e) {
+                    const userCount = Number(reviewForm.dataset.userReviewCount || 0);
+                    const maxRatings = Number(reviewForm.dataset.maxRatings || 2);
+
+                    if (userCount >= maxRatings) {
+                        e.preventDefault();
+                        alert(`Kamu sudah memberikan rating sebanyak ${maxRatings} kali untuk destinasi ini.`);
+                        return;
+                    }
+
                     const trimmedValue = komentarInput.value.trim();
                     if (trimmedValue.length < 10) {
                         e.preventDefault();

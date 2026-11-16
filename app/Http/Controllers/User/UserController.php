@@ -51,14 +51,22 @@ class UserController extends Controller
         // Memuat relasi galeri.user beserta reviews.user & kategori
         $destinasi = Destinasi::with(['reviews.user', 'kategori', 'galeri.user'])->findOrFail($id);
         $isWishlist = false;
-        
+        $userReviewCount = 0;
+
         if (auth()->check()) {
-            $isWishlist = Wishlist::where('user_id', auth()->id())
+            $userId = auth()->id();
+
+            $isWishlist = Wishlist::where('user_id', $userId)
                                   ->where('destinasi_id', $id)
                                   ->exists();
+
+            // Menghitung jumlah rating/ulasan user pada destinasi ini (maksimal 2 kali)
+            $userReviewCount = Review::where('user_id', $userId)
+                                     ->where('destinasi_id', $id)
+                                     ->count();
         }
 
-        return view('user.detail', compact('destinasi', 'isWishlist'));
+        return view('user.detail', compact('destinasi', 'isWishlist', 'userReviewCount'));
     }
 
     // --- METHOD UNTUK UPLOAD FOTO (MAX 5MB) / VIDEO (MAX 30MB) ---
@@ -122,14 +130,29 @@ class UserController extends Controller
     {
         $request->validate([
             'rating' => 'required|integer|min:1|max:5',
-            'komentar' => 'required|string|max:500',
+            'komentar' => 'required|string|min:10|max:500',
         ]);
 
+        $maxRatingsPerUser = 2;
+        $userId = auth()->id();
+
+        $userReviewCount = Review::where('user_id', $userId)
+                                 ->where('destinasi_id', $id)
+                                 ->count();
+
+        if ($userReviewCount >= $maxRatingsPerUser) {
+            return back()
+                ->withInput()
+                ->withErrors([
+                    'rating' => 'Kamu sudah mencapai batas maksimal memberikan rating sebanyak 2 kali untuk destinasi ini.'
+                ]);
+        }
+
         Review::create([
-            'user_id' => auth()->id(),
+            'user_id' => $userId,
             'destinasi_id' => $id,
             'rating' => $request->rating,
-            'komentar' => $request->komentar,
+            'komentar' => trim($request->komentar),
         ]);
 
         return back()->with('success', 'Ulasan berhasil dikirim!');
