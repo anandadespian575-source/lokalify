@@ -1,0 +1,39 @@
+
+<IfModule mod_rewrite.c>
+    <IfModule mod_negotiation.c>
+        Options -MultiViews
+    </IfModule>
+
+    RewriteEngine On
+
+    # ==========================================
+    # LARAVEL STORAGE - SYMLINK REPLACEMENT
+    # ==========================================
+    RewriteRule ^storage/(.*)$ storage/app/public/$1 [END]
+
+    # ==========================================
+    # HANDLE AUTHORIZATION HEADER
+    # ==========================================
+    RewriteCond %{HTTP:Authorization} .
+    RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+
+    # ==========================================
+    # HANDLE EXISTING FILES AND DIRECTORIES
+    # ==========================================
+    RewriteCond %{REQUEST_FILENAME} -d [OR]
+    RewriteCond %{REQUEST_FILENAME} -f
+    RewriteRule ^ ^$1 [N]
+
+    # ==========================================
+    # SERVE PUBLIC ASSETS
+    # ==========================================
+    RewriteCond %{REQUEST_URI} (\.\w+$) [NC]
+    RewriteRule ^(.*)$ public/$1
+
+    # ==========================================
+    # LARAVEL ROUTING
+    # ==========================================
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteRule ^ index.php
+</IfModule>
