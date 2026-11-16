@@ -89,7 +89,7 @@
         @endif
 
         @if($errors->any())
-            // Menampilkan pesan error validasi (termasuk error komentar dari server)
+            {{-- Menampilkan pesan error validasi dari server --}}
             <div class="bg-rose-500/10 border border-rose-500/30 text-rose-300 p-3.5 rounded-2xl text-xs space-y-1.5 shadow-sm">
                 @foreach ($errors->all() as $error)
                     <p class="flex items-center space-x-2">
@@ -216,7 +216,7 @@
                     @csrf
                     <div>
                         <input type="file" name="media" accept="image/jpeg,image/png,image/jpg,video/mp4,video/mov,video/avi" required class="block w-full text-[11px] text-slate-400 file:mr-3 file:py-2 file:px-3.5 file:rounded-xl file:border-0 file:text-[11px] file:font-bold file:bg-teal-500 file:text-slate-950 hover:file:bg-teal-400 cursor-pointer bg-slate-900 border border-slate-800 rounded-xl transition">
-                        <p class="text-[10px] text-slate-500 mt-1.5">Maksimal ukuran: <b class="text-slate-400">Foto 5MB</b> | <b class="text-slate-400"></b></p>
+                        <p class="text-[10px] text-slate-500 mt-1.5">Maksimal ukuran: <b class="text-slate-400">Foto 5MB</b></p>
                     </div>
                     <button type="submit" class="btn-micro w-full py-2.5 bg-teal-500 hover:bg-teal-400 text-slate-950 font-extrabold rounded-xl text-xs transition shadow-md shadow-teal-500/10">
                         Unggah Ke Galeri
@@ -225,7 +225,7 @@
             </div>
         </div>
 
-        // Bagian statistik dan daftar komentar pengguna
+        {{-- Bagian statistik, filter rating, dan ringkasan ulasan --}}
         @php
             $reviewItems = $destinasi->reviews ?? collect();
             $totalReviews = $reviewItems->count();
@@ -236,9 +236,10 @@
         @endphp
 
         <div class="scroll-reveal space-y-3.5 pt-2">
+            {{-- [AREA DITANDAI 1] Tombol urutkan rating & rata-rata rating --}}
             <div class="flex flex-wrap justify-between items-center gap-2 border-b border-slate-800 pb-2.5">
                 <h3 class="font-extrabold text-white text-xs">User Reviews</h3>
-                <div class="flex items-center space-x-2">
+                <div class="flex flex-wrap items-center gap-2">
                     <div class="flex items-center bg-slate-950 border border-slate-800 rounded-xl p-0.5 text-[10px]">
                         <button type="button" id="btnSortTerbaru" onclick="sortReviews('terbaru')" class="px-2.5 py-1 rounded-lg font-bold bg-teal-500 text-slate-950 transition">
                             Rating Terbaru
@@ -253,37 +254,43 @@
                     </div>
                 </div>
             </div>
+            <p class="text-[10px] text-slate-400">
+                <b class="text-slate-300">Keterangan:</b> Tombol <span class="text-teal-400 font-semibold">Rating Terbaru</span> & <span class="text-teal-400 font-semibold">Rating Tertinggi</span> mengatur urutan ulasan di bawah, sedangkan badge bintang menampilkan rata-rata rating beserta persentasenya.
+            </p>
 
             @if($totalReviews > 0)
-                // tampilan komentar tertinggi dan terbaru
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                    <div class="bg-slate-950/70 p-3.5 rounded-2xl border border-slate-800/80 space-y-1.5">
-                        <div class="flex justify-between items-center">
-                            <span class="text-[10px] font-extrabold uppercase tracking-wider text-teal-400">Rating Terbaru</span>
-                            <span class="text-amber-400 font-bold text-[11px]">
-                                <i class="fa-solid fa-star text-[10px]"></i> {{ $latestReview->rating }}/5
-                            </span>
+                {{-- [AREA DITANDAI 2] Ringkasan ulasan terbaru dan rating tertinggi --}}
+                <div class="bg-slate-950/50 border border-slate-800/80 rounded-2xl p-3.5 space-y-2.5">
+                    <p class="text-[10px] text-slate-400">
+                        <b class="text-slate-300">Ringkasan Sorotan:</b> Menampilkan ulasan yang paling baru masuk (<span class="text-teal-400 font-semibold">Rating Terbaru</span>) dan ulasan dengan skor bintang tertinggi (<span class="text-amber-400 font-semibold">Rating Tertinggi</span>).
+                    </p>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <div class="bg-slate-950/70 p-3.5 rounded-2xl border border-slate-800/80 space-y-1.5">
+                            <div class="flex justify-between items-center">
+                                <span class="text-[10px] font-extrabold uppercase tracking-wider text-teal-400">Rating Terbaru</span>
+                                <span class="text-amber-400 font-bold text-[11px]">
+                                    <i class="fa-solid fa-star text-[10px]"></i> {{ $latestReview->rating }}/5
+                                </span>
+                            </div>
+                            <p class="text-[11px] font-bold text-white">{{ $latestReview->user->name ?? 'Pengguna' }}</p>
+                            <p class="text-[11px] text-slate-300 line-clamp-2">{{ $latestReview->komentar }}</p>
                         </div>
-                        <p class="text-[11px] font-bold text-white">{{ $latestReview->user->name ?? 'Pengguna' }}</p>
-                        // komentar terbaru
-                        <p class="text-[11px] text-slate-300 line-clamp-2">{{ $latestReview->komentar }}</p>
-                    </div>
 
-                    <div class="bg-slate-950/70 p-3.5 rounded-2xl border border-slate-800/80 space-y-1.5">
-                        <div class="flex justify-between items-center">
-                            <span class="text-[10px] font-extrabold uppercase tracking-wider text-amber-400">Rating Tertinggi</span>
-                            <span class="text-amber-400 font-bold text-[11px]">
-                                <i class="fa-solid fa-star text-[10px]"></i> {{ $highestReview->rating }}/5
-                            </span>
+                        <div class="bg-slate-950/70 p-3.5 rounded-2xl border border-slate-800/80 space-y-1.5">
+                            <div class="flex justify-between items-center">
+                                <span class="text-[10px] font-extrabold uppercase tracking-wider text-amber-400">Rating Tertinggi</span>
+                                <span class="text-amber-400 font-bold text-[11px]">
+                                    <i class="fa-solid fa-star text-[10px]"></i> {{ $highestReview->rating }}/5
+                                </span>
+                            </div>
+                            <p class="text-[11px] font-bold text-white">{{ $highestReview->user->name ?? 'Pengguna' }}</p>
+                            <p class="text-[11px] text-slate-300 line-clamp-2">{{ $highestReview->komentar }}</p>
                         </div>
-                        <p class="text-[11px] font-bold text-white">{{ $highestReview->user->name ?? 'Pengguna' }}</p>
-                        // komentar rating tertinggi
-                        <p class="text-[11px] text-slate-300 line-clamp-2">{{ $highestReview->komentar }}</p>
                     </div>
                 </div>
             @endif
             
-            // Daftar semua komentar pengguna
+            {{-- Daftar semua komentar pengguna --}}
             <div id="reviewList" class="space-y-3 max-h-52 overflow-y-auto no-scrollbar">
                 @forelse ($reviewItems->sortByDesc('created_at') as $rev)
                     <div class="review-item bg-slate-950/70 p-4 rounded-2xl border border-slate-800/80 flex items-start space-x-3 shadow-sm"
@@ -302,7 +309,6 @@
                                     <span class="text-slate-400 ml-1">({{ $rev->rating }}/5)</span>
                                 </div>
                             </div>
-                            // Teks komentar ulasan pengguna
                             <p class="text-xs text-slate-300 leading-relaxed">{{ $rev->komentar }}</p>
                             @if($rev->foto)
                                 <img src="{{ asset('storage/' . $rev->foto) }}" class="w-20 h-20 object-cover rounded-xl border border-slate-800 mt-2 shadow-md">
@@ -315,13 +321,12 @@
             </div>
         </div>
 
-        // bagian kirim komentar ulasan dengan validasi minimal 10 karakter
+        {{-- Form kirim komentar ulasan dengan validasi minimal 10 karakter --}}
         <div class="scroll-reveal bg-slate-950/70 p-4.5 rounded-2xl border border-slate-800/80 space-y-3 shadow-sm">
             <h4 class="font-bold text-white text-xs flex items-center gap-1.5">
                 <i class="fa-solid fa-pen-nib text-teal-400"></i>
                 <span>Beri Ulasan Kamu</span>
             </h4>
-            // bagian untuk mengirim komentar ke database
             <form id="reviewForm" action="{{ route('user.review.store', $destinasi->id) }}" method="POST" class="space-y-3">
                 @csrf
                 <div>
@@ -337,10 +342,8 @@
                 <div>
                     <div class="flex justify-between items-center mb-1">
                         <label class="block text-[11px] text-slate-400 font-medium">Komentar / Pengalaman:</label>
-                        // Penghitung jumlah karakter komentar (minimal 10 karakter)
                         <span id="komentarCounter" class="text-[10px] text-slate-500">0 / min. 10 karakter</span>
                     </div>
-                    // Input komentar ulasan validasi wajib 10 karakter
                     <textarea
                         id="komentarInput"
                         name="komentar"
@@ -350,7 +353,6 @@
                         placeholder="Tuliskan ulasan kamu (minimal 10 karakter)..."
                         class="w-full bg-slate-900 border border-slate-800 text-white rounded-xl p-3.5 text-xs focus:outline-none focus:border-teal-500 transition placeholder-slate-500"
                     >{{ old('komentar') }}</textarea>
-                    // Pesan peringatan ketika komentar kurang dari 10 karakter
                     <p id="komentarError" class="hidden text-[11px] text-rose-400 mt-1 flex items-center gap-1">
                         <i class="fa-solid fa-circle-exclamation text-[10px]"></i>
                         <span>Komentar minimal harus 10 karakter (tanpa spasi berlebih di awal/akhir).</span>
@@ -466,31 +468,26 @@
 
             if (reviewForm && komentarInput) {
                 const updateKomentarUI = () => {
-                    // Menghitung panjang komentar setelah semua spasi dari awal sampai akhir di hapus
+                    // Menghitung panjang karakter komentar setelah spasi di awal/akhir dihapus
                     const trimmedLength = komentarInput.value.trim().length;
                     komentarCounter.textContent = `${trimmedLength} / min. 10 karakter`;
 
                     if (trimmedLength >= 10) {
-                        // komentar sudah bisa di tambahkan karna lebih dari 10 karakter
                         komentarCounter.className = 'text-[10px] text-teal-400 font-semibold';
                         komentarInput.classList.remove('border-rose-500', 'focus:border-rose-500');
                         komentarInput.classList.add('border-slate-800', 'focus:border-teal-500');
                         komentarError.classList.add('hidden');
                     } else {
-                        // kalo komentar kurang dari 10 karakter tida bisa
                         komentarCounter.className = 'text-[10px] text-slate-400';
                     }
                 };
 
-                // Memantau ketikan komentar
                 komentarInput.addEventListener('input', updateKomentarUI);
                 updateKomentarUI();
 
-                // validasi banyak nya komentar
                 reviewForm.addEventListener('submit', function (e) {
                     const trimmedValue = komentarInput.value.trim();
                     if (trimmedValue.length < 10) {
-                        // menolak pengiriman komentar apabila kurang dari 10 karakter
                         e.preventDefault();
                         komentarError.classList.remove('hidden');
                         komentarInput.classList.remove('border-slate-800', 'focus:border-teal-500');
@@ -501,7 +498,7 @@
             }
         });
 
-        // Mengurutkan daftar ulasan dan komentar terbaru dan tertinggi
+        // Mengurutkan daftar ulasan berdasarkan rating terbaru atau rating tertinggi
         function sortReviews(mode) {
             const list = document.getElementById('reviewList');
             const btnTerbaru = document.getElementById('btnSortTerbaru');
