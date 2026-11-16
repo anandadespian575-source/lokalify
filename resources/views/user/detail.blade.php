@@ -477,7 +477,7 @@
                         komentarInput.classList.add('border-slate-800', 'focus:border-teal-500');
                         komentarError.classList.add('hidden');
                     } else {
-                        // kalo komentar kurang dari 10 karakter 
+                        // kalo komentar kurang dari 10 karakter tida bisa
                         komentarCounter.className = 'text-[10px] text-slate-400';
                     }
                 };
